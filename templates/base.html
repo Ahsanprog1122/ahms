@@ -24,19 +24,26 @@
                         mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
-                        brand: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
+                        emerald: {
+                            400: '#34d399',
                             500: '#10b981',
                             600: '#059669',
-                            700: '#047857',
+                            950: '#022c22',
                         },
-                        dark: {
-                            950: '#090d16',
-                            900: '#0f172a',
-                            850: '#131d35',
-                            800: '#1e293b',
-                            700: '#334155',
+                        amber: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            950: '#451a03',
+                        },
+                        teal: {
+                            400: '#2dd4bf',
+                            500: '#14b8a6',
+                            950: '#042f2e',
+                        },
+                        slate: {
+                            850: '#131b2e',
+                            900: '#0b1120',
+                            950: '#060913',
                         }
                     }
                 }
@@ -74,29 +81,29 @@
                 <!-- Brand / Symbol -->
                 <div class="flex items-center space-x-6">
                     <a href="{% url 'root' %}" class="flex items-center gap-3 group">
-                        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-emerald-500 flex items-center justify-center font-black text-white text-base shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-teal-500 to-emerald-400 flex items-center justify-center font-black text-slate-950 text-base shadow-lg shadow-teal-500/20 group-hover:scale-105 transition">
                             A
                         </div>
                         <div class="flex flex-col">
                             <span class="text-lg font-black tracking-wider text-white leading-tight">AHMS</span>
-                            <span class="text-[10px] text-slate-400 font-mono tracking-widest uppercase">Asset Health</span>
+                            <span class="text-[10px] text-teal-400 font-mono tracking-widest uppercase">Asset Health</span>
                         </div>
                     </a>
-                    <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-800/80 border border-slate-700/60 text-[11px] font-mono text-emerald-400">
+                    <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-950/40 border border-emerald-800/50 text-[11px] font-mono text-emerald-400">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                        BASE: PKR
+                        PKR BASE
                     </div>
                 </div>
 
                 <!-- Central Navigation Links (Clean Minimal Typography) -->
                 <nav class="hidden lg:flex items-center space-x-1 text-xs font-medium text-slate-300">
-                    <a href="{% url 'dashboard' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition">Dashboard</a>
-                    <a href="{% url 'asset_list' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition">Portfolio Holdings</a>
-                    <a href="{% url 'portfolio_analysis' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition">Risk & HHI</a>
-                    <a href="{% url 'health_score_detail' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition">Health Rating</a>
-                    <a href="{% url 'alerts_list' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition">Alerts</a>
-                    <a href="{% url 'reports_view' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition">Statements</a>
-                    <a href="{% url 'settings_view' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition">Settings</a>
+                    <a href="{% url 'dashboard' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-teal-300 transition">Dashboard</a>
+                    <a href="{% url 'asset_list' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-teal-300 transition">Holdings</a>
+                    <a href="{% url 'portfolio_analysis' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-teal-300 transition">Risk & HHI</a>
+                    <a href="{% url 'health_score_detail' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-teal-300 transition">Health Rating</a>
+                    <a href="{% url 'alerts_list' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-amber-300 transition">Alerts</a>
+                    <a href="{% url 'reports_view' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-teal-300 transition">Statements</a>
+                    <a href="{% url 'settings_view' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-teal-300 transition">Settings</a>
                 </nav>
 
                 <!-- User Session Menu -->
