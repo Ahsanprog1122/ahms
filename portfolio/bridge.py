@@ -4,7 +4,7 @@ Ensures views and templates never perform financial calculations directly.
 """
 
 from decimal import Decimal
-from typing import Tuple, List
+from typing import Tuple, List, Optional
 from django.db.models import QuerySet
 from portfolio.models import (
     Portfolio as PortfolioModel,
@@ -164,11 +164,49 @@ class PortfolioAnalyticsBridge:
     def evaluate(
         cls,
         portfolio_model: PortfolioModel,
-        annualized_return_pct: Decimal = Decimal("9.0"),
-        growth_12m_pct: Decimal = Decimal("6.0"),
-        income_yield_pct: Decimal = Decimal("1.6"),
-    ) -> Tuple[AnalyticsPortfolio, HealthScoreResult, List[AnalyticsAlert], List[dict]]:
+        annualized_return_pct: Optional[Decimal] = None,
+        growth_12m_pct: Optional[Decimal] = None,
+        income_yield_pct: Optional[Decimal] = None,
+    ) -> Tuple[AnalyticsPortfolio, Optional[HealthScoreResult], List[AnalyticsAlert], List[dict]]:
         analytics_p = cls.to_analytics_portfolio(portfolio_model)
+
+        # If portfolio has 0 assets, do not use dummy percentages or dummy scores
+        if not analytics_p.assets or analytics_p.total_value() == Decimal("0"):
+            empty_result = HealthScoreResult(
+                profitability_score=Decimal("0.0"),
+                diversification_score=Decimal("0.0"),
+                liquidity_score=Decimal("0.0"),
+                risk_score=Decimal("0.0"),
+                growth_score=Decimal("0.0"),
+                income_score=Decimal("0.0"),
+                total_score=Decimal("0.00"),
+                band="N/A (No Assets)",
+                hhi=Decimal("0.0000"),
+                largest_holding_share=Decimal("0.0000"),
+                liquid_share=Decimal("0.0000"),
+            )
+            return analytics_p, empty_result, [], []
+
+        # Actual performance calculation
+        tot_val = analytics_p.total_value()
+        tot_cost = analytics_p.total_cost_basis()
+        
+        # Calculate real gain and annualized return
+        p_ret = annualized_return_pct
+        if p_ret is None:
+            p_ret = Decimal("0.0")
+            if tot_cost > Decimal("0"):
+                p_ret = ((tot_val - tot_cost) / tot_cost) * Decimal("100.0")
+
+        # Trailing 12-month income yield
+        inc_yield = income_yield_pct
+        if inc_yield is None:
+            inc_yield = Decimal("0.0")
+            ann_inc = analytics_p.annual_income()
+            if tot_val > Decimal("0") and ann_inc > Decimal("0"):
+                inc_yield = (ann_inc / tot_val) * Decimal("100.0")
+
+        g_pct = growth_12m_pct if growth_12m_pct is not None else Decimal("0.0")
 
         # Build ScoreSettings from DB if available
         settings_obj = AnalyticsScoreSettings()
@@ -184,18 +222,17 @@ class PortfolioAnalyticsBridge:
         evaluator = AssetHealthEvaluator(settings_obj)
         score_result = evaluator.evaluate_portfolio(
             portfolio=analytics_p,
-            annualized_return_pct=annualized_return_pct,
-            growth_12m_pct=growth_12m_pct,
-            income_yield_pct=income_yield_pct,
+            annualized_return_pct=p_ret,
+            growth_12m_pct=g_pct,
+            income_yield_pct=inc_yield,
         )
 
         alerts = RecommendationEngine.generate_recommendations(analytics_p, score_result)
 
         # Asset items decorated with status
-        total_val = analytics_p.total_value()
         asset_cards = []
         for a in analytics_p.assets:
-            status = AssetHealthStatus.evaluate(a, total_val)
+            status = AssetHealthStatus.evaluate(a, tot_val)
             asset_cards.append({
                 "name": a.name,
                 "category": a.category,
