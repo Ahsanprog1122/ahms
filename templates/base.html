@@ -6,6 +6,8 @@
     <title>{% block title %}AHMS - Asset Health Management System{% endblock %}</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -36,13 +38,34 @@
 
                 <!-- Navigation Links matching 12 Screens -->
                 <div class="hidden md:flex items-center space-x-1 text-sm font-medium">
-                    <a href="{% url 'dashboard' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-white transition">Dashboard</a>
-                    <a href="{% url 'asset_list' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-white transition">Assets</a>
-                    <a href="{% url 'portfolio_analysis' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-white transition">Analysis</a>
-                    <a href="{% url 'health_score_detail' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-white transition">Health Score</a>
-                    <a href="{% url 'alerts_list' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-white transition">Alerts</a>
-                    <a href="{% url 'reports_view' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-white transition">Reports</a>
-                    <a href="{% url 'settings_view' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-white transition">Settings</a>
+                    <a href="{% url 'dashboard' %}" class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-white transition">
+                        <i data-lucide="layout-dashboard" class="w-4 h-4 text-indigo-400"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="{% url 'asset_list' %}" class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-white transition">
+                        <i data-lucide="coins" class="w-4 h-4 text-emerald-400"></i>
+                        <span>Assets</span>
+                    </a>
+                    <a href="{% url 'portfolio_analysis' %}" class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-white transition">
+                        <i data-lucide="pie-chart" class="w-4 h-4 text-cyan-400"></i>
+                        <span>Analysis</span>
+                    </a>
+                    <a href="{% url 'health_score_detail' %}" class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-white transition">
+                        <i data-lucide="activity" class="w-4 h-4 text-rose-400"></i>
+                        <span>Health Score</span>
+                    </a>
+                    <a href="{% url 'alerts_list' %}" class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-white transition">
+                        <i data-lucide="bell" class="w-4 h-4 text-amber-400"></i>
+                        <span>Alerts</span>
+                    </a>
+                    <a href="{% url 'reports_view' %}" class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-white transition">
+                        <i data-lucide="file-text" class="w-4 h-4 text-blue-400"></i>
+                        <span>Reports</span>
+                    </a>
+                    <a href="{% url 'settings_view' %}" class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-white transition">
+                        <i data-lucide="settings" class="w-4 h-4 text-slate-400"></i>
+                        <span>Settings</span>
+                    </a>
                 </div>
 
                 <!-- User Session / Auth -->
@@ -99,5 +122,14 @@
             </p>
         </div>
     </footer>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+    </script>
 </body>
 </html>
