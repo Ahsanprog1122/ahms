@@ -6,54 +6,98 @@
     <title>{% block title %}AHMS - Asset Health Management System{% endblock %}</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e3a8a',
+                        healthy: '#10b981',
+                        moderate: '#f59e0b',
+                        weak: '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans">
-    <!-- Navbar -->
-    <nav class="bg-indigo-900 text-white shadow-md">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans antialiased">
+    <!-- Navbar with Proposal-Matched Links -->
+    <nav class="bg-slate-900 text-white shadow-lg sticky top-0 z-50 border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
+                <!-- Brand / Logo -->
                 <div class="flex items-center space-x-3">
-                    <span class="text-2xl font-black tracking-wider text-indigo-400">AHMS</span>
-                    <span class="text-xs bg-indigo-800 text-indigo-200 px-2.5 py-0.5 rounded-full uppercase tracking-wider font-semibold">PKR Base</span>
+                    <a href="{% url 'dashboard' %}" class="flex items-center gap-2">
+                        <span class="text-2xl font-black tracking-wider text-indigo-400">AHMS</span>
+                        <span class="text-xs bg-indigo-950 text-indigo-300 border border-indigo-800 px-2.5 py-0.5 rounded-full uppercase tracking-wider font-semibold">PKR Base</span>
+                    </a>
                 </div>
-                <div class="flex items-center space-x-4 text-sm font-medium">
+
+                <!-- Navigation Links matching 12 Screens -->
+                <div class="hidden md:flex items-center space-x-1 text-sm font-medium">
+                    <a href="{% url 'dashboard' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-white transition">Dashboard</a>
+                    <a href="{% url 'asset_list' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-white transition">Assets</a>
+                    <a href="{% url 'portfolio_analysis' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-white transition">Analysis</a>
+                    <a href="{% url 'health_score_detail' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-white transition">Health Score</a>
+                    <a href="{% url 'alerts_list' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-white transition">Alerts</a>
+                    <a href="{% url 'reports_view' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-white transition">Reports</a>
+                    <a href="{% url 'settings_view' %}" class="px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-200 hover:text-white transition">Settings</a>
+                </div>
+
+                <!-- User Session / Auth -->
+                <div class="flex items-center space-x-3 text-sm">
                     {% if user.is_authenticated %}
-                        <a href="{% url 'dashboard' %}" class="hover:text-indigo-200 transition">Dashboard</a>
-                        <span class="text-indigo-400">|</span>
-                        <span class="text-indigo-200">{{ user.username }}</span>
+                        <span class="text-xs text-indigo-300 font-semibold bg-slate-800 px-2.5 py-1 rounded-md hidden sm:inline-block">{{ user.username }}</span>
                         <form method="post" action="{% url 'logout' %}" class="inline">
                             {% csrf_token %}
-                            <button type="submit" class="bg-indigo-800 hover:bg-indigo-700 text-white px-3 py-1.5 rounded transition">Logout</button>
+                            <button type="submit" class="bg-red-900/60 hover:bg-red-800 text-red-200 text-xs px-3 py-1.5 rounded-lg border border-red-800/80 transition">Logout</button>
                         </form>
                     {% else %}
-                        <a href="{% url 'login' %}" class="hover:text-indigo-200 transition">Log In</a>
-                        <a href="{% url 'signup' %}" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-1.5 rounded transition shadow">Sign Up</a>
+                        <a href="{% url 'login' %}" class="text-slate-300 hover:text-white px-3 py-1.5 text-xs font-semibold">Log In</a>
+                        <a href="{% url 'signup' %}" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-1.5 rounded-lg text-xs font-semibold shadow">Sign Up</a>
                     {% endif %}
                 </div>
             </div>
         </div>
+
+        <!-- Mobile Bottom / Sub Menu for responsiveness -->
+        <div class="md:hidden flex overflow-x-auto px-4 py-2 bg-slate-800/80 border-t border-slate-700 text-xs space-x-3">
+            <a href="{% url 'dashboard' %}" class="text-slate-300 whitespace-nowrap">Dashboard</a>
+            <a href="{% url 'asset_list' %}" class="text-slate-300 whitespace-nowrap">Assets</a>
+            <a href="{% url 'portfolio_analysis' %}" class="text-slate-300 whitespace-nowrap">Analysis</a>
+            <a href="{% url 'health_score_detail' %}" class="text-slate-300 whitespace-nowrap">Health Score</a>
+            <a href="{% url 'alerts_list' %}" class="text-slate-300 whitespace-nowrap">Alerts</a>
+            <a href="{% url 'reports_view' %}" class="text-slate-300 whitespace-nowrap">Reports</a>
+            <a href="{% url 'settings_view' %}" class="text-slate-300 whitespace-nowrap">Settings</a>
+        </div>
     </nav>
 
-    <!-- Messages -->
+    <!-- Global Alerts / Messages -->
     {% if messages %}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 w-full">
         {% for message in messages %}
-            <div class="p-3 mb-2 rounded text-sm {% if message.tags == 'error' %}bg-red-100 text-red-800 border border-red-200{% elif message.tags == 'success' %}bg-green-100 text-green-800 border border-green-200{% else %}bg-blue-100 text-blue-800 border border-blue-200{% endif %}">
+            <div class="p-3 mb-2 rounded-lg text-sm {% if message.tags == 'error' %}bg-red-50 text-red-800 border border-red-200{% elif message.tags == 'success' %}bg-green-50 text-green-800 border border-green-200{% else %}bg-blue-50 text-blue-800 border border-blue-200{% endif %}">
                 {{ message }}
             </div>
         {% endfor %}
     </div>
     {% endif %}
 
-    <!-- Main Content -->
+    <!-- Main Content Shell -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500">
-        <p>&copy; {% now "Y" %} Asset Health Management System (AHMS). Base Currency: PKR.</p>
-        <p class="mt-1 text-slate-400">Decision support engine &mdash; not certified financial advice.</p>
+    <!-- Footer with Mandatory Legal Disclaimer -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 space-y-1">
+            <p>&copy; {% now "Y" %} Asset Health Management System (AHMS) &bull; Department of Financial Technology</p>
+            <p class="text-slate-400">Team: Muhammad Mohsin Raza, Abdul Jabbar, Masoob Naveed, Ahsan</p>
+            <p class="text-indigo-600 font-medium pt-1">
+                Disclaimer: Recommendations and Health Scores are rule-based decision support only and do not constitute certified financial or investment advice.
+            </p>
+        </div>
     </footer>
 </body>
 </html>

@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Portfolio Analysis - AHMS{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+        <h1 class="text-2xl font-bold text-slate-900">Portfolio Analysis & Concentration</h1>
+        <p class="text-sm text-slate-500">Category shares, single-holding concentration risk, HHI diversification index, and liquidity analysis</p>
+    </div>
+
+    <!-- Concentration Metrics Overview -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="p-6 bg-white rounded-xl border border-slate-200 shadow-sm">
+            <span class="text-xs uppercase font-bold text-slate-400">Herfindahl Index (HHI)</span>
+            <div class="text-3xl font-black text-slate-900 mt-2">{{ score_result.hhi }}</div>
+            <p class="text-xs text-slate-500 mt-1">Target &le; 0.20 (Equal 5-category spread = 0.20)</p>
+        </div>
+
+        <div class="p-6 bg-white rounded-xl border border-slate-200 shadow-sm">
+            <span class="text-xs uppercase font-bold text-slate-400">Largest Single Holding</span>
+            <div class="text-3xl font-black {% if score_result.largest_holding_share > 0.25 %}text-amber-600{% else %}text-emerald-600{% endif %} mt-2">
+                {{ score_result.largest_holding_share|floatformat:2 }}
+            </div>
+            <p class="text-xs text-slate-500 mt-1">Alert threshold: > 25% of portfolio</p>
+        </div>
+
+        <div class="p-6 bg-white rounded-xl border border-slate-200 shadow-sm">
+            <span class="text-xs uppercase font-bold text-slate-400">Liquid Capital Share</span>
+            <div class="text-3xl font-black {% if score_result.liquid_share >= 0.50 %}text-emerald-600{% else %}text-amber-600{% endif %} mt-2">
+                {{ score_result.liquid_share|floatformat:2 }}
+            </div>
+            <p class="text-xs text-slate-500 mt-1">Target &ge; 50% in liquid / gold holdings</p>
+        </div>
+
+        <div class="p-6 bg-white rounded-xl border border-slate-200 shadow-sm">
+            <span class="text-xs uppercase font-bold text-slate-400">Total Tracked Value</span>
+            <div class="text-3xl font-black text-indigo-700 mt-2">PKR {{ total_value|floatformat:2 }}</div>
+            <p class="text-xs text-slate-500 mt-1">Across {{ asset_cards|length }} total assets</p>
+        </div>
+    </div>
+
+    <!-- Category Breakdown Table & Charts -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+            <h2 class="text-base font-bold text-slate-900 mb-4">Category Allocation Chart</h2>
+            <div class="w-full h-72 flex items-center justify-center">
+                <canvas id="analysisCategoryChart"></canvas>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+            <h2 class="text-base font-bold text-slate-900 mb-4">Category Shares & Risk Breakdown</h2>
+            <div class="space-y-4">
+                {% for cat, share in cat_share_items %}
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span class="capitalize text-slate-700">{{ cat }}</span>
+                            <span class="text-slate-900">{{ share|floatformat:1 }}%</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                            <div class="bg-indigo-600 h-2.5 rounded-full" style="width: {{ share }}%"></div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-xs text-slate-400">No assets available to calculate category distribution.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const ctx = document.getElementById('analysisCategoryChart');
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: {{ chart_labels|safe }},
+                    datasets: [{
+                        label: 'Allocation %',
+                        data: {{ chart_data|safe }},
+                        backgroundColor: '#4f46e5',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, max: 100 }
+                    }
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

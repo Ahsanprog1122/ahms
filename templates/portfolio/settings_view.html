@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Settings - AHMS{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+        <h1 class="text-2xl font-bold text-slate-900">Portfolio & Account Settings</h1>
+        <p class="text-sm text-slate-500">Configure health score indicator weights, targets, privacy controls, and data exports</p>
+    </div>
+
+    <!-- Health Score Weights Configuration Form -->
+    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+        <h2 class="text-base font-bold text-slate-900 mb-2">Health Score Weights (Must sum to 100%)</h2>
+        <p class="text-xs text-slate-500 mb-6">Customize weights according to your personal financial objectives.</p>
+
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Profitability Weight (%)</label>
+                    <input type="number" step="1" name="weight_profitability" value="25" class="w-full px-3 py-2 border rounded-lg text-sm border-slate-300">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Diversification Weight (%)</label>
+                    <input type="number" step="1" name="weight_diversification" value="20" class="w-full px-3 py-2 border rounded-lg text-sm border-slate-300">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Liquidity Weight (%)</label>
+                    <input type="number" step="1" name="weight_liquidity" value="15" class="w-full px-3 py-2 border rounded-lg text-sm border-slate-300">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Risk Exposure Weight (%)</label>
+                    <input type="number" step="1" name="weight_risk" value="15" class="w-full px-3 py-2 border rounded-lg text-sm border-slate-300">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Growth Weight (%)</label>
+                    <input type="number" step="1" name="weight_growth" value="15" class="w-full px-3 py-2 border rounded-lg text-sm border-slate-300">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Income Yield Weight (%)</label>
+                    <input type="number" step="1" name="weight_income" value="10" class="w-full px-3 py-2 border rounded-lg text-sm border-slate-300">
+                </div>
+            </div>
+
+            <div class="pt-4 flex justify-end">
+                <button type="button" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-5 py-2 rounded-lg text-sm shadow">
+                    Save Scoring Model
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Data Privacy & Account Deletion Controls (Section 10 of Proposal) -->
+    <div class="bg-white p-6 rounded-xl border border-red-200 shadow-sm">
+        <h2 class="text-base font-bold text-red-900 mb-1">Data Privacy & Account Controls</h2>
+        <p class="text-xs text-slate-500 mb-4">Export all your data or permanently delete your account and all associated portfolios.</p>
+
+        <div class="flex flex-col sm:flex-row gap-4 pt-2">
+            <button class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold px-4 py-2.5 rounded-lg border border-slate-300 transition">
+                Export All My Data (JSON / CSV)
+            </button>
+            <button class="bg-red-50 hover:bg-red-100 text-red-700 text-xs font-semibold px-4 py-2.5 rounded-lg border border-red-300 transition">
+                Permanently Delete Account
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}

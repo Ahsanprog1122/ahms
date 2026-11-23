@@ -1,4 +1,4 @@
-"""Views for Portfolio dashboard, asset management, and valuations."""
+"""Views for all proposal screens."""
 
 from decimal import Decimal
 from django.contrib import messages
@@ -32,47 +32,136 @@ from .forms import (
 @login_required
 def dashboard_view(request):
     """Primary Portfolio Dashboard showing Health Score, Asset Allocation, and Alerts."""
-    user = request.user
-    portfolio = Portfolio.objects.filter(user=user).first()
-
+    portfolio = Portfolio.objects.filter(user=request.user).first()
     if not portfolio:
-        portfolio = Portfolio.objects.create(
-            user=user,
-            name="Primary Portfolio",
-            base_currency="PKR",
-            is_default=True,
-        )
+        portfolio = Portfolio.objects.create(user=request.user, name="Primary Portfolio")
 
-    analytics_p, score_result, alerts, asset_cards = PortfolioAnalyticsBridge.evaluate(
-        portfolio_model=portfolio,
-        annualized_return_pct=Decimal("9.0"),
-        growth_12m_pct=Decimal("6.0"),
-        income_yield_pct=Decimal("1.6"),
-    )
-
+    analytics_p, score_result, alerts, asset_cards = PortfolioAnalyticsBridge.evaluate(portfolio)
     cat_shares = analytics_p.category_shares()
     chart_labels = [cat.replace("_", " ").title() for cat in cat_shares.keys()]
     chart_data = [float(val * Decimal("100")) for val in cat_shares.values()]
 
-    context = {
-        "portfolio": portfolio,
-        "total_value": analytics_p.total_value(),
-        "cost_basis": analytics_p.total_cost_basis(),
-        "total_gain": analytics_p.total_gain(),
-        "score_result": score_result,
-        "alerts": alerts,
-        "asset_cards": asset_cards,
-        "chart_labels": chart_labels,
-        "chart_data": chart_data,
-        "base_currency": portfolio.base_currency,
-    }
+    return render(
+        request,
+        "portfolio/dashboard.html",
+        {
+            "portfolio": portfolio,
+            "total_value": analytics_p.total_value(),
+            "cost_basis": analytics_p.total_cost_basis(),
+            "total_gain": analytics_p.total_gain(),
+            "score_result": score_result,
+            "alerts": alerts,
+            "asset_cards": asset_cards,
+            "chart_labels": chart_labels,
+            "chart_data": chart_data,
+            "base_currency": portfolio.base_currency,
+        },
+    )
 
-    return render(request, "portfolio/dashboard.html", context)
+
+@login_required
+def asset_list_view(request):
+    """Screen: Assets Inventory (Proposal Page 15)."""
+    portfolio = Portfolio.objects.filter(user=request.user).first()
+    assets = portfolio.assets.all() if portfolio else []
+
+    analytics_p, score_result, alerts, asset_cards = PortfolioAnalyticsBridge.evaluate(portfolio) if portfolio else (None, None, [], [])
+
+    asset_rows = []
+    if portfolio:
+        for a in assets:
+            current_val = a.get_current_value()
+            gain = current_val - a.cost_basis
+            status = "Healthy"
+            if a.valuations.exists() and (a.get_latest_valuation().valuation_date):
+                from datetime import date
+                if (date.today() - a.get_latest_valuation().valuation_date).days > 90:
+                    status = "Watch"
+            asset_rows.append({
+                "asset": a,
+                "current_val": current_val,
+                "gain": gain,
+                "status": status,
+            })
+
+    return render(request, "portfolio/asset_list.html", {"portfolio": portfolio, "asset_rows": asset_rows})
+
+
+@login_required
+def portfolio_analysis_view(request):
+    """Screen: Portfolio Analysis (Proposal Page 16)."""
+    portfolio = Portfolio.objects.filter(user=request.user).first()
+    analytics_p, score_result, alerts, asset_cards = PortfolioAnalyticsBridge.evaluate(portfolio)
+
+    cat_shares = analytics_p.category_shares()
+    chart_labels = [cat.replace("_", " ").title() for cat in cat_shares.keys()]
+    chart_data = [float(val * Decimal("100")) for val in cat_shares.values()]
+    cat_share_items = [(cat.replace("_", " "), float(val * Decimal("100"))) for cat, val in cat_shares.items()]
+
+    return render(
+        request,
+        "portfolio/portfolio_analysis.html",
+        {
+            "portfolio": portfolio,
+            "total_value": analytics_p.total_value(),
+            "score_result": score_result,
+            "asset_cards": asset_cards,
+            "chart_labels": chart_labels,
+            "chart_data": chart_data,
+            "cat_share_items": cat_share_items,
+        },
+    )
+
+
+@login_required
+def health_score_detail_view(request):
+    """Screen: Health Score Breakdown (Proposal Page 16)."""
+    portfolio = Portfolio.objects.filter(user=request.user).first()
+    analytics_p, score_result, alerts, asset_cards = PortfolioAnalyticsBridge.evaluate(portfolio)
+
+    return render(
+        request,
+        "portfolio/health_score_detail.html",
+        {
+            "portfolio": portfolio,
+            "score_result": score_result,
+        },
+    )
+
+
+@login_required
+def alerts_list_view(request):
+    """Screen: Recommendations and Alerts (Proposal Page 16)."""
+    portfolio = Portfolio.objects.filter(user=request.user).first()
+    analytics_p, score_result, alerts, asset_cards = PortfolioAnalyticsBridge.evaluate(portfolio)
+
+    return render(
+        request,
+        "portfolio/alerts_list.html",
+        {
+            "portfolio": portfolio,
+            "alerts": alerts,
+        },
+    )
+
+
+@login_required
+def reports_view(request):
+    """Screen: Reports Download PDF/CSV (Proposal Page 16)."""
+    portfolio = Portfolio.objects.filter(user=request.user).first()
+    return render(request, "reports/reports_view.html", {"portfolio": portfolio})
+
+
+@login_required
+def settings_view(request):
+    """Screen: Settings and Data Privacy Controls (Proposal Page 16-18)."""
+    portfolio = Portfolio.objects.filter(user=request.user).first()
+    return render(request, "portfolio/settings_view.html", {"portfolio": portfolio})
 
 
 @login_required
 def asset_create_view(request, asset_type):
-    """Form view to add a new physical or financial asset."""
+    """Screen: Add or Edit Asset (Proposal Page 16)."""
     portfolio = Portfolio.objects.filter(user=request.user).first()
     if not portfolio:
         portfolio = Portfolio.objects.create(user=request.user, name="Primary Portfolio")
@@ -98,16 +187,14 @@ def asset_create_view(request, asset_type):
             asset = form.save(commit=False)
             asset.portfolio = portfolio
             asset.save()
-            # Record initial valuation row matching purchase price or latest price
-            initial_val = asset.cost_basis
             AssetValuation.objects.create(
                 asset=asset,
                 valuation_date=asset.purchase_date,
-                value=initial_val,
+                value=asset.cost_basis,
                 source=AssetValuation.Source.MANUAL,
-                notes="Initial purchase valuation",
+                notes="Initial acquisition valuation",
             )
-            messages.success(request, f"{display_name} '{asset.name}' has been added successfully.")
+            messages.success(request, f"{display_name} '{asset.name}' recorded successfully.")
             return redirect("dashboard")
     else:
         form = form_class()
@@ -126,13 +213,10 @@ def asset_create_view(request, asset_type):
 
 @login_required
 def asset_detail_view(request, asset_id):
-    """View details, valuation history, and income logs for an asset."""
+    """Screen: Asset Detail & Update Valuation (Proposal Page 16)."""
     asset = get_object_or_404(Asset, id=asset_id, portfolio__user=request.user)
     valuations = asset.valuations.all()
     incomes = asset.incomes.all()
-
-    valuation_form = AssetValuationForm()
-    income_form = IncomeForm()
 
     if request.method == "POST":
         if "submit_valuation" in request.POST:
@@ -141,7 +225,7 @@ def asset_detail_view(request, asset_id):
                 val = v_form.save(commit=False)
                 val.asset = asset
                 val.save()
-                messages.success(request, f"New valuation of PKR {val.value} recorded.")
+                messages.success(request, f"New valuation of PKR {val.value} added to history.")
                 return redirect("asset_detail", asset_id=asset.id)
         elif "submit_income" in request.POST:
             i_form = IncomeForm(request.POST)
@@ -159,7 +243,7 @@ def asset_detail_view(request, asset_id):
             "asset": asset,
             "valuations": valuations,
             "incomes": incomes,
-            "valuation_form": valuation_form,
-            "income_form": income_form,
+            "valuation_form": AssetValuationForm(),
+            "income_form": IncomeForm(),
         },
     )
