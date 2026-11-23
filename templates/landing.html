@@ -1,209 +1,220 @@
 {% extends "base.html" %}
 
-{% block title %}AHMS - Asset Health Management System | Is Your Wealth Healthy?{% endblock %}
+{% block title %}AHMS &mdash; Quantitative Wealth Health Platform{% endblock %}
 
 {% block content %}
-<div class="space-y-16 py-6">
-    <!-- Hero Section -->
-    <div class="relative bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-8 sm:p-14 shadow-2xl overflow-hidden border border-slate-800">
-        <!-- Glow accent -->
-        <div class="absolute -top-24 -right-24 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="space-y-24 py-8">
+    <!-- Hero Section: Modern Fintech Dark Terminal -->
+    <section class="relative rounded-3xl bg-gradient-to-b from-slate-900 via-slate-900/90 to-slate-950 border border-slate-800 p-8 sm:p-16 overflow-hidden shadow-2xl">
+        <div class="absolute inset-0 bg-[radial-gradient(#334155_1px,transparent_1px)] [background-size:16px_16px] opacity-25"></div>
+        <div class="absolute -top-32 -right-32 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        <div class="max-w-3xl space-y-6 relative z-10">
-            <div class="inline-flex items-center gap-2 bg-indigo-900/60 border border-indigo-700/50 px-3.5 py-1 rounded-full text-xs font-semibold text-indigo-300">
+        <div class="max-w-4xl relative z-10 space-y-6">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/80 border border-slate-700 text-xs font-mono text-emerald-400">
                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                First-of-its-kind Multi-Asset Health Engine in Pakistan
+                <span>PAKISTAN ASSET HEALTH ENGINE &bull; PKR STANDARDIZED</span>
             </div>
 
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
-                Don’t just track your wealth. Know if it’s <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-emerald-400">healthy</span>.
+            <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-white leading-tight">
+                Beyond Net Worth. <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-indigo-400 to-cyan-400">
+                    Know if your wealth is healthy.
+                </span>
             </h1>
 
-            <p class="text-base sm:text-lg text-slate-300 leading-relaxed">
-                Most tracking apps only show your total net worth. <strong>AHMS</strong> tells an investor whether their assets are profitable, diversified, liquid, and protected against concentration risk — giving you an objective <strong>0 to 100 Asset Health Score</strong> with plain-language recommendations.
+            <p class="text-base sm:text-lg text-slate-300 leading-relaxed max-w-2xl font-light">
+                Traditional platforms track what you paid and total balances. <strong>AHMS</strong> evaluates profitability, liquid runway, category diversification, and concentration hazard to compute an objective <strong>0 to 100 Asset Health Score</strong>.
             </p>
 
             <div class="flex flex-wrap items-center gap-4 pt-4">
                 {% if user.is_authenticated %}
-                    <a href="{% url 'dashboard' %}" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-3.5 rounded-xl text-sm shadow-lg shadow-indigo-600/30 transition transform hover:-translate-y-0.5">
-                        Open My Portfolio Dashboard &rarr;
+                    <a href="{% url 'dashboard' %}" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-7 py-3.5 rounded-xl text-xs font-mono tracking-wider uppercase shadow-lg shadow-emerald-500/10 transition transform hover:-translate-y-0.5 flex items-center gap-2">
+                        <span>Access Terminal</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
                     </a>
                 {% else %}
-                    <a href="{% url 'signup' %}" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-3.5 rounded-xl text-sm shadow-lg shadow-indigo-600/30 transition transform hover:-translate-y-0.5">
-                        Get Started Free (PKR Base)
+                    <a href="{% url 'signup' %}" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-7 py-3.5 rounded-xl text-xs font-mono tracking-wider uppercase shadow-lg shadow-emerald-500/10 transition transform hover:-translate-y-0.5 flex items-center gap-2">
+                        <span>Initialize Portfolio (PKR)</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
                     </a>
-                    <a href="{% url 'login' %}" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold px-6 py-3.5 rounded-xl text-sm transition">
-                        Log In to Account
+                    <a href="{% url 'login' %}" class="bg-slate-800 hover:bg-slate-700 text-white font-medium px-6 py-3.5 rounded-xl text-xs border border-slate-700 transition">
+                        Sign In &rarr;
                     </a>
                 {% endif %}
             </div>
 
-            <div class="flex items-center gap-6 pt-4 text-xs text-slate-400 border-t border-slate-800/80">
-                <span>✓ Pure Python OOP Engine</span>
-                <span>✓ Decimal Precision (No float rounding)</span>
-                <span>✓ Base Currency: PKR</span>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-8 border-t border-slate-800/80 text-xs font-mono text-slate-400">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+                    <span>Pure Python OOP</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+                    <span>Decimal Precision</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+                    <span>PKR Multi-Asset Base</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+                    <span>Data Isolated</span>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- The 5 Common Situations AHMS Solves (From Proposal Page 1-2) -->
-    <div>
-        <div class="text-center max-w-2xl mx-auto mb-10">
-            <h2 class="text-xs uppercase font-bold tracking-widest text-indigo-600">The Problem & Who It Helps</h2>
-            <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">Five Common Gaps in Wealth Management</h3>
-            <p class="text-sm text-slate-500 mt-2">Traditional apps answer "what do I own?". AHMS answers "is my wealth balanced and safe?".</p>
+    <!-- Five Structural Gaps Solved (From Proposal Page 1-2) -->
+    <section class="space-y-10">
+        <div class="space-y-2">
+            <span class="text-xs font-mono text-indigo-400 uppercase tracking-widest font-semibold">Diagnostic Scope</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">The Five Fundamental Wealth Blindspots</h2>
+            <p class="text-sm text-slate-400">How AHMS converts invisible portfolio hazards into actionable metrics.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
-                <div class="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 font-bold mb-4">1</div>
-                <h4 class="font-bold text-slate-900 text-sm mb-1">Scattered Holdings</h4>
-                <p class="text-xs text-slate-500 leading-relaxed">
-                    You hold PSX shares, a residential plot, gold tolas, and bank savings in separate notebooks and apps with no single net value or return figure.
-                </p>
-                <div class="mt-4 pt-3 border-t border-slate-100 text-xs font-semibold text-indigo-600">
-                    AHMS puts all physical & financial assets in one place.
-                </div>
-            </div>
-
-            <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
-                <div class="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 font-bold mb-4">2</div>
-                <h4 class="font-bold text-slate-900 text-sm mb-1">Invisible Real Estate Growth</h4>
-                <p class="text-xs text-slate-500 leading-relaxed">
-                    A plot bought for PKR 5,000,000 in 2024 is "probably worth more," but appreciation is never recorded or tracked over time.
-                </p>
-                <div class="mt-4 pt-3 border-t border-slate-100 text-xs font-semibold text-amber-600">
-                    Dated manual valuations with 90-day review reminders.
-                </div>
-            </div>
-
-            <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
-                <div class="w-10 h-10 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-600 font-bold mb-4">3</div>
-                <h4 class="font-bold text-slate-900 text-sm mb-1">Concentration Risk</h4>
-                <p class="text-xs text-slate-500 leading-relaxed">
-                    60% of your wealth sits in one commercial property or one high-risk stock, and danger is only felt after a catastrophic market drop.
-                </p>
-                <div class="mt-4 pt-3 border-t border-slate-100 text-xs font-semibold text-rose-600">
-                    Measures HHI & warns when one holding exceeds limits.
-                </div>
-            </div>
-
-            <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
-                <div class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 font-bold mb-4">4</div>
-                <h4 class="font-bold text-slate-900 text-sm mb-1">Illiquid Traps</h4>
-                <p class="text-xs text-slate-500 leading-relaxed">
-                    Most wealth is tied up in illiquid land. When emergency cash is needed, owners are forced into distressed sales at discounts.
-                </p>
-                <div class="mt-4 pt-3 border-t border-slate-100 text-xs font-semibold text-blue-600">
-                    Tracks liquid share vs. 50% target to protect emergency liquidity.
-                </div>
-            </div>
-
-            <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
-                <div class="w-10 h-10 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 font-bold mb-4">5</div>
-                <h4 class="font-bold text-slate-900 text-sm mb-1">Hidden Underperformers</h4>
-                <p class="text-xs text-slate-500 leading-relaxed">
-                    A holding has lost value or generated 0% income for over a year, but goes unnoticed because total net worth still looks high.
-                </p>
-                <div class="mt-4 pt-3 border-t border-slate-100 text-xs font-semibold text-purple-600">
-                    Per-asset health classification: Healthy, Watch, or Weak.
-                </div>
-            </div>
-
-            <div class="p-6 bg-gradient-to-br from-indigo-50 to-emerald-50 rounded-2xl border border-indigo-100 shadow-sm flex flex-col justify-between">
+            <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl flex flex-col justify-between hover:border-slate-700 transition">
                 <div>
-                    <span class="text-xs uppercase font-bold text-indigo-700">The Core Result</span>
-                    <h4 class="font-bold text-slate-900 text-sm mt-1">The 0-100 Health Score</h4>
-                    <p class="text-xs text-slate-600 mt-2 leading-relaxed">
-                        A single composite score calculated through six published, transparent mathematical formulas.
+                    <div class="w-9 h-9 rounded-lg bg-indigo-950/80 border border-indigo-800/80 text-indigo-400 flex items-center justify-center font-mono text-xs font-bold mb-4">
+                        01
+                    </div>
+                    <h3 class="text-base font-bold text-white mb-2">Fragmented Holdings</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Shares in PSX brokers, gold in bank lockers, real estate in plot files, and cash deposits in savings accounts with zero unified return calculation.
                     </p>
                 </div>
-                <div class="pt-4 border-t border-indigo-200 text-xs font-bold text-indigo-900">
-                    80-100 Healthy &bull; 60-79 Moderately Healthy &bull; 40-59 Needs Improvement &bull; 0-39 Weak
+                <div class="mt-6 pt-3 border-t border-slate-800/80 text-xs font-mono text-indigo-400">
+                    &bull; Single unified portfolio view
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Supported Asset Types Grid (From Proposal Page 7-8) -->
-    <div class="bg-white p-8 sm:p-12 rounded-3xl border border-slate-200 shadow-sm">
-        <div class="text-center max-w-2xl mx-auto mb-10">
-            <h2 class="text-xs uppercase font-bold tracking-widest text-indigo-600">Coverage</h2>
-            <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">Both Financial and Physical Assets</h3>
-            <p class="text-sm text-slate-500 mt-2">All asset types inherit from one base OOP class and know how to find their current value.</p>
+            <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl flex flex-col justify-between hover:border-slate-700 transition">
+                <div>
+                    <div class="w-9 h-9 rounded-lg bg-emerald-950/80 border border-emerald-800/80 text-emerald-400 flex items-center justify-center font-mono text-xs font-bold mb-4">
+                        02
+                    </div>
+                    <h3 class="text-base font-bold text-white mb-2">Unrecorded Real Estate Gain</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Properties bought years ago sit without dated valuations. True appreciation is invisible, and portfolio net worth is perpetually underestimated.
+                    </p>
+                </div>
+                <div class="mt-6 pt-3 border-t border-slate-800/80 text-xs font-mono text-emerald-400">
+                    &bull; Dated valuations + 90-day review alerts
+                </div>
+            </div>
+
+            <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl flex flex-col justify-between hover:border-slate-700 transition">
+                <div>
+                    <div class="w-9 h-9 rounded-lg bg-rose-950/80 border border-rose-800/80 text-rose-400 flex items-center justify-center font-mono text-xs font-bold mb-4">
+                        03
+                    </div>
+                    <h3 class="text-base font-bold text-white mb-2">Catastrophic Concentration</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Over 60% of total wealth committed to a single parcel of land or speculative stock. Risk is only discovered when the market experiences a drawdown.
+                    </p>
+                </div>
+                <div class="mt-6 pt-3 border-t border-slate-800/80 text-xs font-mono text-rose-400">
+                    &bull; HHI score penalty for >20% single holdings
+                </div>
+            </div>
+
+            <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl flex flex-col justify-between hover:border-slate-700 transition">
+                <div>
+                    <div class="w-9 h-9 rounded-lg bg-cyan-950/80 border border-cyan-800/80 text-cyan-400 flex items-center justify-center font-mono text-xs font-bold mb-4">
+                        04
+                    </div>
+                    <h3 class="text-base font-bold text-white mb-2">Illiquid Asset Lockup</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Wealth is predominantly locked in illiquid property. In sudden liquidity events, investors face severe distressed discounts to raise cash.
+                    </p>
+                </div>
+                <div class="mt-6 pt-3 border-t border-slate-800/80 text-xs font-mono text-cyan-400">
+                    &bull; 50% target liquid buffer tracking
+                </div>
+            </div>
+
+            <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl flex flex-col justify-between hover:border-slate-700 transition">
+                <div>
+                    <div class="w-9 h-9 rounded-lg bg-amber-950/80 border border-amber-800/80 text-amber-400 flex items-center justify-center font-mono text-xs font-bold mb-4">
+                        05
+                    </div>
+                    <h3 class="text-base font-bold text-white mb-2">Hidden Decay</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Holdings yielding 0% income or suffering continuous unrealized loss are concealed behind strong overall portfolio totals.
+                    </p>
+                </div>
+                <div class="mt-6 pt-3 border-t border-slate-800/80 text-xs font-mono text-amber-400">
+                    &bull; Automatic status flags: Healthy, Watch, Weak
+                </div>
+            </div>
+
+            <div class="p-6 bg-gradient-to-br from-indigo-950/60 to-slate-900 border border-indigo-900/60 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <span class="text-xs font-mono text-indigo-300 uppercase tracking-wider font-semibold">The Core Synthesis</span>
+                    <h3 class="text-base font-bold text-white mt-2">The Asset Health Score</h3>
+                    <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                        Combining Profitability (25%), Diversification (20%), Liquidity (15%), Risk (15%), Growth (15%), and Income (10%).
+                    </p>
+                </div>
+                <div class="mt-6 pt-3 border-t border-indigo-900/60 text-xs font-mono text-emerald-400">
+                    &bull; Mathematically verifiable & reproducible
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Institutional Coverage Grid -->
+    <section class="p-8 sm:p-12 rounded-3xl bg-slate-900 border border-slate-800 space-y-8">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+            <div>
+                <span class="text-xs font-mono text-indigo-400 uppercase tracking-widest font-semibold">Multi-Table Asset Coverage</span>
+                <h2 class="text-2xl font-bold text-white mt-1">Supported Physical & Financial Instruments</h2>
+            </div>
+            <span class="text-xs font-mono text-slate-500">PKR BASE CONVERSION</span>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-indigo-200 hover:bg-indigo-50/30 transition group flex flex-col items-center">
-                <div class="w-12 h-12 rounded-2xl bg-indigo-100/70 text-indigo-600 flex items-center justify-center mb-3 group-hover:scale-110 transition">
-                    <i data-lucide="trending-up" class="w-6 h-6"></i>
-                </div>
-                <h4 class="font-bold text-slate-900 text-sm">Stocks / Equities</h4>
-                <p class="text-xs text-slate-500 mt-1">PSX listed shares & quantity valuation</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="p-5 rounded-xl bg-slate-950/60 border border-slate-800/80 hover:border-slate-700 transition">
+                <i data-lucide="trending-up" class="w-5 h-5 text-indigo-400 mb-2"></i>
+                <h4 class="text-sm font-bold text-white">Equities & PSX</h4>
+                <p class="text-[11px] text-slate-400 mt-1">Listed shares, closing prices, and FIFO gains.</p>
             </div>
-            <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-amber-200 hover:bg-amber-50/30 transition group flex flex-col items-center">
-                <div class="w-12 h-12 rounded-2xl bg-amber-100/70 text-amber-600 flex items-center justify-center mb-3 group-hover:scale-110 transition">
-                    <i data-lucide="sparkles" class="w-6 h-6"></i>
-                </div>
-                <h4 class="font-bold text-slate-900 text-sm">Gold & Bullion</h4>
-                <p class="text-xs text-slate-500 mt-1">Weight in tolas or grams (treated as liquid)</p>
+            <div class="p-5 rounded-xl bg-slate-950/60 border border-slate-800/80 hover:border-slate-700 transition">
+                <i data-lucide="sparkles" class="w-5 h-5 text-amber-400 mb-2"></i>
+                <h4 class="text-sm font-bold text-white">Gold & Bullion</h4>
+                <p class="text-[11px] text-slate-400 mt-1">Tolas and grams tracking with liquid status.</p>
             </div>
-            <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-emerald-200 hover:bg-emerald-50/30 transition group flex flex-col items-center">
-                <div class="w-12 h-12 rounded-2xl bg-emerald-100/70 text-emerald-600 flex items-center justify-center mb-3 group-hover:scale-110 transition">
-                    <i data-lucide="home" class="w-6 h-6"></i>
-                </div>
-                <h4 class="font-bold text-slate-900 text-sm">Land & Real Estate</h4>
-                <p class="text-xs text-slate-500 mt-1">Marlas, kanals, acres with dated valuations</p>
+            <div class="p-5 rounded-xl bg-slate-950/60 border border-slate-800/80 hover:border-slate-700 transition">
+                <i data-lucide="home" class="w-5 h-5 text-emerald-400 mb-2"></i>
+                <h4 class="text-sm font-bold text-white">Land & Plots</h4>
+                <p class="text-[11px] text-slate-400 mt-1">Marlas, kanals, and acres with dated valuations.</p>
             </div>
-            <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-blue-200 hover:bg-blue-50/30 transition group flex flex-col items-center">
-                <div class="w-12 h-12 rounded-2xl bg-blue-100/70 text-blue-600 flex items-center justify-center mb-3 group-hover:scale-110 transition">
-                    <i data-lucide="wallet" class="w-6 h-6"></i>
-                </div>
-                <h4 class="font-bold text-slate-900 text-sm">Cash & Deposits</h4>
-                <p class="text-xs text-slate-500 mt-1">Bank savings & money market balances</p>
+            <div class="p-5 rounded-xl bg-slate-950/60 border border-slate-800/80 hover:border-slate-700 transition">
+                <i data-lucide="wallet" class="w-5 h-5 text-cyan-400 mb-2"></i>
+                <h4 class="text-sm font-bold text-white">Cash & Savings</h4>
+                <p class="text-[11px] text-slate-400 mt-1">Bank deposits, money markets, interest yields.</p>
             </div>
-            <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-cyan-200 hover:bg-cyan-50/30 transition group flex flex-col items-center">
-                <div class="w-12 h-12 rounded-2xl bg-cyan-100/70 text-cyan-600 flex items-center justify-center mb-3 group-hover:scale-110 transition">
-                    <i data-lucide="pie-chart" class="w-6 h-6"></i>
-                </div>
-                <h4 class="font-bold text-slate-900 text-sm">Mutual Funds / ETFs</h4>
-                <p class="text-xs text-slate-500 mt-1">Unit counts & Net Asset Values (NAV)</p>
+            <div class="p-5 rounded-xl bg-slate-950/60 border border-slate-800/80 hover:border-slate-700 transition">
+                <i data-lucide="pie-chart" class="w-5 h-5 text-blue-400 mb-2"></i>
+                <h4 class="text-sm font-bold text-white">Mutual Funds</h4>
+                <p class="text-[11px] text-slate-400 mt-1">ETFs, mutual fund units, and published NAVs.</p>
             </div>
-            <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-purple-200 hover:bg-purple-50/30 transition group flex flex-col items-center">
-                <div class="w-12 h-12 rounded-2xl bg-purple-100/70 text-purple-600 flex items-center justify-center mb-3 group-hover:scale-110 transition">
-                    <i data-lucide="scroll" class="w-6 h-6"></i>
-                </div>
-                <h4 class="font-bold text-slate-900 text-sm">Bonds & Sukuks</h4>
-                <p class="text-xs text-slate-500 mt-1">Face value, coupon rate & accrued interest</p>
+            <div class="p-5 rounded-xl bg-slate-950/60 border border-slate-800/80 hover:border-slate-700 transition">
+                <i data-lucide="scroll" class="w-5 h-5 text-purple-400 mb-2"></i>
+                <h4 class="text-sm font-bold text-white">Fixed Income</h4>
+                <p class="text-[11px] text-slate-400 mt-1">PIBs, Treasury Bills, and Sukuk bonds.</p>
             </div>
-            <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-rose-200 hover:bg-rose-50/30 transition group flex flex-col items-center">
-                <div class="w-12 h-12 rounded-2xl bg-rose-100/70 text-rose-600 flex items-center justify-center mb-3 group-hover:scale-110 transition">
-                    <i data-lucide="car" class="w-6 h-6"></i>
-                </div>
-                <h4 class="font-bold text-slate-900 text-sm">Vehicles & Physical</h4>
-                <p class="text-xs text-slate-500 mt-1">Depreciation tracking & purchase year</p>
+            <div class="p-5 rounded-xl bg-slate-950/60 border border-slate-800/80 hover:border-slate-700 transition">
+                <i data-lucide="car" class="w-5 h-5 text-rose-400 mb-2"></i>
+                <h4 class="text-sm font-bold text-white">Vehicles</h4>
+                <p class="text-[11px] text-slate-400 mt-1">Automobile and depreciating physical assets.</p>
             </div>
-            <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-slate-300 hover:bg-slate-100 transition group flex flex-col items-center">
-                <div class="w-12 h-12 rounded-2xl bg-slate-200 text-slate-700 flex items-center justify-center mb-3 group-hover:scale-110 transition">
-                    <i data-lucide="file-check-2" class="w-6 h-6"></i>
-                </div>
-                <h4 class="font-bold text-slate-900 text-sm">Executive Reports</h4>
-                <p class="text-xs text-slate-500 mt-1">One-click PDF statements and CSV exports</p>
+            <div class="p-5 rounded-xl bg-slate-950/60 border border-slate-800/80 hover:border-slate-700 transition">
+                <i data-lucide="file-check-2" class="w-5 h-5 text-emerald-400 mb-2"></i>
+                <h4 class="text-sm font-bold text-white">Executive Statements</h4>
+                <p class="text-[11px] text-slate-400 mt-1">PDF portfolio health reports and CSV exports.</p>
             </div>
         </div>
-    </div>
-
-    <!-- Call to Action Banner -->
-    <div class="bg-indigo-900 text-white rounded-3xl p-8 sm:p-12 text-center space-y-4">
-        <h3 class="text-2xl sm:text-3xl font-extrabold">Ready to evaluate your asset health?</h3>
-        <p class="text-sm text-indigo-200 max-w-xl mx-auto">
-            Create an account in 30 seconds and record your first holding in Pakistani Rupee.
-        </p>
-        <div class="pt-2">
-            <a href="{% url 'signup' %}" class="inline-block bg-white hover:bg-slate-100 text-indigo-900 font-bold px-8 py-3.5 rounded-xl text-sm shadow transition">
-                Create Free Account
-            </a>
-        </div>
-    </div>
+    </section>
 </div>
 {% endblock %}
