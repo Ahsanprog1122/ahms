@@ -5,5 +5,6 @@ from . import views
 
 urlpatterns = [
     path("dashboard/", views.dashboard_view, name="dashboard"),
-    path("assets/", views.asset_list_view, name="asset_list"),
+    path("assets/add/<str:asset_type>/", views.asset_create_view, name="asset_create"),
+    path("assets/<int:asset_id>/", views.asset_detail_view, name="asset_detail"),
 ]

@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}{{ asset.name }} - Asset Detail - AHMS{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+            <div class="flex items-center gap-2">
+                <h1 class="text-2xl font-bold text-slate-900">{{ asset.name }}</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800 uppercase">{{ asset.category }}</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-1">Acquired on {{ asset.purchase_date }} &bull; Initial Cost: PKR {{ asset.cost_basis|floatformat:2 }}</p>
+        </div>
+        <a href="{% url 'dashboard' %}" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition">&larr; Return to Dashboard</a>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="p-5 bg-white rounded-xl border border-slate-200 shadow-sm">
+            <span class="text-xs uppercase font-bold text-slate-400">Current Valuation</span>
+            <div class="text-3xl font-extrabold text-slate-900 mt-1">PKR {{ asset.get_current_value|floatformat:2 }}</div>
+        </div>
+        <div class="p-5 bg-white rounded-xl border border-slate-200 shadow-sm">
+            <span class="text-xs uppercase font-bold text-slate-400">Total Quantity</span>
+            <div class="text-3xl font-extrabold text-slate-900 mt-1">{{ asset.quantity }}</div>
+        </div>
+        <div class="p-5 bg-white rounded-xl border border-slate-200 shadow-sm">
+            <span class="text-xs uppercase font-bold text-slate-400">Liquidity Status</span>
+            <div class="text-3xl font-extrabold {% if asset.is_liquid %}text-emerald-600{% else %}text-amber-600{% endif %} mt-1">
+                {% if asset.is_liquid %}Liquid{% else %}Illiquid{% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Valuation History & Add Valuation Form -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="p-5 border-b border-slate-200 flex justify-between items-center">
+                <h2 class="text-base font-bold text-slate-900">Historical Valuations (Append-Only)</h2>
+                <span class="text-xs text-slate-400">{{ valuations|length }} entries</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-slate-600">
+                    <thead class="bg-slate-50 text-xs uppercase font-semibold text-slate-500 border-b border-slate-200">
+                        <tr>
+                            <th class="px-5 py-3">Date</th>
+                            <th class="px-5 py-3">Value (PKR)</th>
+                            <th class="px-5 py-3">Source</th>
+                            <th class="px-5 py-3">Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        {% for val in valuations %}
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-5 py-3">{{ val.valuation_date }}</td>
+                                <td class="px-5 py-3 font-semibold text-slate-900">PKR {{ val.value|floatformat:2 }}</td>
+                                <td class="px-5 py-3 capitalize"><span class="px-2 py-0.5 rounded text-xs bg-slate-100 text-slate-700">{{ val.source }}</span></td>
+                                <td class="px-5 py-3 text-xs text-slate-400">{{ val.notes|default:"-" }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr><td colspan="4" class="px-5 py-6 text-center text-slate-400">No valuations recorded.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Add Valuation Modal / Panel -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+            <h2 class="text-base font-bold text-slate-900 mb-3">Record New Valuation</h2>
+            <p class="text-xs text-slate-500 mb-4">Values never overwrite existing rows; they are appended to the timeline.</p>
+            <form method="post" class="space-y-3">
+                {% csrf_token %}
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Date</label>
+                    <input type="date" name="valuation_date" required class="w-full px-3 py-2 border rounded-lg text-sm border-slate-300">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Valuation (PKR)</label>
+                    <input type="number" step="0.01" name="value" required class="w-full px-3 py-2 border rounded-lg text-sm border-slate-300">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Source</label>
+                    <select name="source" class="w-full px-3 py-2 border rounded-lg text-sm border-slate-300 bg-white">
+                        <option value="manual">Manual Entry</option>
+                        <option value="appraisal">Certified Appraisal</option>
+                        <option value="api">Market Data API</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Notes</label>
+                    <input type="text" name="notes" class="w-full px-3 py-2 border rounded-lg text-sm border-slate-300">
+                </div>
+                <button type="submit" name="submit_valuation" class="w-full mt-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-lg text-sm shadow">
+                    Save Valuation
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

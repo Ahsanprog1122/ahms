@@ -18,6 +18,9 @@
                 {% else %}bg-red-100 text-red-800 border border-red-200{% endif %}">
                 ● {{ score_result.band }}
             </span>
+            <a href="{% url 'asset_create' 'stock' %}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-3.5 py-1.5 rounded-lg text-xs shadow transition flex items-center gap-1">
+                <span>+</span> Add Asset
+            </a>
         </div>
     </div>
 
