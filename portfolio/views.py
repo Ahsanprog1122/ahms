@@ -29,12 +29,18 @@ from .forms import (
 )
 
 
+def _get_or_create_portfolio(user):
+    """Helper to ensure the user always has a default portfolio."""
+    portfolio = Portfolio.objects.filter(user=user).first()
+    if not portfolio:
+        portfolio = Portfolio.objects.create(user=user, name="Primary Portfolio", is_default=True)
+    return portfolio
+
+
 @login_required
 def dashboard_view(request):
     """Primary Portfolio Dashboard showing Health Score, Asset Allocation, and Alerts."""
-    portfolio = Portfolio.objects.filter(user=request.user).first()
-    if not portfolio:
-        portfolio = Portfolio.objects.create(user=request.user, name="Primary Portfolio")
+    portfolio = _get_or_create_portfolio(request.user)
 
     analytics_p, score_result, alerts, asset_cards = PortfolioAnalyticsBridge.evaluate(portfolio)
     cat_shares = analytics_p.category_shares()
@@ -62,27 +68,26 @@ def dashboard_view(request):
 @login_required
 def asset_list_view(request):
     """Screen: Assets Inventory (Proposal Page 15)."""
-    portfolio = Portfolio.objects.filter(user=request.user).first()
-    assets = portfolio.assets.all() if portfolio else []
+    portfolio = _get_or_create_portfolio(request.user)
+    assets = portfolio.assets.all()
 
-    analytics_p, score_result, alerts, asset_cards = PortfolioAnalyticsBridge.evaluate(portfolio) if portfolio else (None, None, [], [])
+    analytics_p, score_result, alerts, asset_cards = PortfolioAnalyticsBridge.evaluate(portfolio)
 
     asset_rows = []
-    if portfolio:
-        for a in assets:
-            current_val = a.get_current_value()
-            gain = current_val - a.cost_basis
-            status = "Healthy"
-            if a.valuations.exists() and (a.get_latest_valuation().valuation_date):
-                from datetime import date
-                if (date.today() - a.get_latest_valuation().valuation_date).days > 90:
-                    status = "Watch"
-            asset_rows.append({
-                "asset": a,
-                "current_val": current_val,
-                "gain": gain,
-                "status": status,
-            })
+    for a in assets:
+        current_val = a.get_current_value()
+        gain = current_val - a.cost_basis
+        status = "Healthy"
+        if a.valuations.exists() and (a.get_latest_valuation().valuation_date):
+            from datetime import date
+            if (date.today() - a.get_latest_valuation().valuation_date).days > 90:
+                status = "Watch"
+        asset_rows.append({
+            "asset": a,
+            "current_val": current_val,
+            "gain": gain,
+            "status": status,
+        })
 
     return render(request, "portfolio/asset_list.html", {"portfolio": portfolio, "asset_rows": asset_rows})
 
@@ -90,7 +95,7 @@ def asset_list_view(request):
 @login_required
 def portfolio_analysis_view(request):
     """Screen: Portfolio Analysis (Proposal Page 16)."""
-    portfolio = Portfolio.objects.filter(user=request.user).first()
+    portfolio = _get_or_create_portfolio(request.user)
     analytics_p, score_result, alerts, asset_cards = PortfolioAnalyticsBridge.evaluate(portfolio)
 
     cat_shares = analytics_p.category_shares()
@@ -116,7 +121,7 @@ def portfolio_analysis_view(request):
 @login_required
 def health_score_detail_view(request):
     """Screen: Health Score Breakdown (Proposal Page 16)."""
-    portfolio = Portfolio.objects.filter(user=request.user).first()
+    portfolio = _get_or_create_portfolio(request.user)
     analytics_p, score_result, alerts, asset_cards = PortfolioAnalyticsBridge.evaluate(portfolio)
 
     return render(
@@ -132,7 +137,7 @@ def health_score_detail_view(request):
 @login_required
 def alerts_list_view(request):
     """Screen: Recommendations and Alerts (Proposal Page 16)."""
-    portfolio = Portfolio.objects.filter(user=request.user).first()
+    portfolio = _get_or_create_portfolio(request.user)
     analytics_p, score_result, alerts, asset_cards = PortfolioAnalyticsBridge.evaluate(portfolio)
 
     return render(
@@ -148,23 +153,21 @@ def alerts_list_view(request):
 @login_required
 def reports_view(request):
     """Screen: Reports Download PDF/CSV (Proposal Page 16)."""
-    portfolio = Portfolio.objects.filter(user=request.user).first()
+    portfolio = _get_or_create_portfolio(request.user)
     return render(request, "reports/reports_view.html", {"portfolio": portfolio})
 
 
 @login_required
 def settings_view(request):
     """Screen: Settings and Data Privacy Controls (Proposal Page 16-18)."""
-    portfolio = Portfolio.objects.filter(user=request.user).first()
+    portfolio = _get_or_create_portfolio(request.user)
     return render(request, "portfolio/settings_view.html", {"portfolio": portfolio})
 
 
 @login_required
 def asset_create_view(request, asset_type):
     """Screen: Add or Edit Asset (Proposal Page 16)."""
-    portfolio = Portfolio.objects.filter(user=request.user).first()
-    if not portfolio:
-        portfolio = Portfolio.objects.create(user=request.user, name="Primary Portfolio")
+    portfolio = _get_or_create_portfolio(request.user)
 
     form_mapping = {
         "stock": (StockForm, "Stock"),
