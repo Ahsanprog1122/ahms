@@ -2,11 +2,14 @@
 
 from django.contrib import admin
 from django.urls import path, include
-from django.shortcuts import redirect
+from django.shortcuts import render
+
+def landing_page_view(request):
+    return render(request, "landing.html")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("accounts.urls")),
     path("portfolio/", include("portfolio.urls")),
-    path("", lambda request: redirect("dashboard" if request.user.is_authenticated else "login"), name="root"),
+    path("", landing_page_view, name="root"),
 ]

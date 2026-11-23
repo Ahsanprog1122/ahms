@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %}AHMS - Asset Health Management System | Is Your Wealth Healthy?{% endblock %}
+
+{% block content %}
+<div class="space-y-16 py-6">
+    <!-- Hero Section -->
+    <div class="relative bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-8 sm:p-14 shadow-2xl overflow-hidden border border-slate-800">
+        <!-- Glow accent -->
+        <div class="absolute -top-24 -right-24 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-3xl space-y-6 relative z-10">
+            <div class="inline-flex items-center gap-2 bg-indigo-900/60 border border-indigo-700/50 px-3.5 py-1 rounded-full text-xs font-semibold text-indigo-300">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                First-of-its-kind Multi-Asset Health Engine in Pakistan
+            </div>
+
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
+                Don’t just track your wealth. Know if it’s <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-emerald-400">healthy</span>.
+            </h1>
+
+            <p class="text-base sm:text-lg text-slate-300 leading-relaxed">
+                Most tracking apps only show your total net worth. <strong>AHMS</strong> tells an investor whether their assets are profitable, diversified, liquid, and protected against concentration risk — giving you an objective <strong>0 to 100 Asset Health Score</strong> with plain-language recommendations.
+            </p>
+
+            <div class="flex flex-wrap items-center gap-4 pt-4">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-3.5 rounded-xl text-sm shadow-lg shadow-indigo-600/30 transition transform hover:-translate-y-0.5">
+                        Open My Portfolio Dashboard &rarr;
+                    </a>
+                {% else %}
+                    <a href="{% url 'signup' %}" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-3.5 rounded-xl text-sm shadow-lg shadow-indigo-600/30 transition transform hover:-translate-y-0.5">
+                        Get Started Free (PKR Base)
+                    </a>
+                    <a href="{% url 'login' %}" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold px-6 py-3.5 rounded-xl text-sm transition">
+                        Log In to Account
+                    </a>
+                {% endif %}
+            </div>
+
+            <div class="flex items-center gap-6 pt-4 text-xs text-slate-400 border-t border-slate-800/80">
+                <span>✓ Pure Python OOP Engine</span>
+                <span>✓ Decimal Precision (No float rounding)</span>
+                <span>✓ Base Currency: PKR</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- The 5 Common Situations AHMS Solves (From Proposal Page 1-2) -->
+    <div>
+        <div class="text-center max-w-2xl mx-auto mb-10">
+            <h2 class="text-xs uppercase font-bold tracking-widest text-indigo-600">The Problem & Who It Helps</h2>
+            <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">Five Common Gaps in Wealth Management</h3>
+            <p class="text-sm text-slate-500 mt-2">Traditional apps answer "what do I own?". AHMS answers "is my wealth balanced and safe?".</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                <div class="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 font-bold mb-4">1</div>
+                <h4 class="font-bold text-slate-900 text-sm mb-1">Scattered Holdings</h4>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    You hold PSX shares, a residential plot, gold tolas, and bank savings in separate notebooks and apps with no single net value or return figure.
+                </p>
+                <div class="mt-4 pt-3 border-t border-slate-100 text-xs font-semibold text-indigo-600">
+                    AHMS puts all physical & financial assets in one place.
+                </div>
+            </div>
+
+            <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                <div class="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 font-bold mb-4">2</div>
+                <h4 class="font-bold text-slate-900 text-sm mb-1">Invisible Real Estate Growth</h4>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    A plot bought for PKR 5,000,000 in 2024 is "probably worth more," but appreciation is never recorded or tracked over time.
+                </p>
+                <div class="mt-4 pt-3 border-t border-slate-100 text-xs font-semibold text-amber-600">
+                    Dated manual valuations with 90-day review reminders.
+                </div>
+            </div>
+
+            <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                <div class="w-10 h-10 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-600 font-bold mb-4">3</div>
+                <h4 class="font-bold text-slate-900 text-sm mb-1">Concentration Risk</h4>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    60% of your wealth sits in one commercial property or one high-risk stock, and danger is only felt after a catastrophic market drop.
+                </p>
+                <div class="mt-4 pt-3 border-t border-slate-100 text-xs font-semibold text-rose-600">
+                    Measures HHI & warns when one holding exceeds limits.
+                </div>
+            </div>
+
+            <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                <div class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 font-bold mb-4">4</div>
+                <h4 class="font-bold text-slate-900 text-sm mb-1">Illiquid Traps</h4>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    Most wealth is tied up in illiquid land. When emergency cash is needed, owners are forced into distressed sales at discounts.
+                </p>
+                <div class="mt-4 pt-3 border-t border-slate-100 text-xs font-semibold text-blue-600">
+                    Tracks liquid share vs. 50% target to protect emergency liquidity.
+                </div>
+            </div>
+
+            <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                <div class="w-10 h-10 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 font-bold mb-4">5</div>
+                <h4 class="font-bold text-slate-900 text-sm mb-1">Hidden Underperformers</h4>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    A holding has lost value or generated 0% income for over a year, but goes unnoticed because total net worth still looks high.
+                </p>
+                <div class="mt-4 pt-3 border-t border-slate-100 text-xs font-semibold text-purple-600">
+                    Per-asset health classification: Healthy, Watch, or Weak.
+                </div>
+            </div>
+
+            <div class="p-6 bg-gradient-to-br from-indigo-50 to-emerald-50 rounded-2xl border border-indigo-100 shadow-sm flex flex-col justify-between">
+                <div>
+                    <span class="text-xs uppercase font-bold text-indigo-700">The Core Result</span>
+                    <h4 class="font-bold text-slate-900 text-sm mt-1">The 0-100 Health Score</h4>
+                    <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                        A single composite score calculated through six published, transparent mathematical formulas.
+                    </p>
+                </div>
+                <div class="pt-4 border-t border-indigo-200 text-xs font-bold text-indigo-900">
+                    80-100 Healthy &bull; 60-79 Moderately Healthy &bull; 40-59 Needs Improvement &bull; 0-39 Weak
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supported Asset Types Grid (From Proposal Page 7-8) -->
+    <div class="bg-white p-8 sm:p-12 rounded-3xl border border-slate-200 shadow-sm">
+        <div class="text-center max-w-2xl mx-auto mb-10">
+            <h2 class="text-xs uppercase font-bold tracking-widest text-indigo-600">Coverage</h2>
+            <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">Both Financial and Physical Assets</h3>
+            <p class="text-sm text-slate-500 mt-2">All asset types inherit from one base OOP class and know how to find their current value.</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100">
+                <span class="text-2xl block mb-2">📈</span>
+                <h4 class="font-bold text-slate-900 text-sm">Stocks / Equities</h4>
+                <p class="text-xs text-slate-500 mt-1">PSX listed shares & quantity valuation</p>
+            </div>
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100">
+                <span class="text-2xl block mb-2">🪙</span>
+                <h4 class="font-bold text-slate-900 text-sm">Gold & Bullion</h4>
+                <p class="text-xs text-slate-500 mt-1">Weight in tolas or grams (treated as liquid)</p>
+            </div>
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100">
+                <span class="text-2xl block mb-2">🏡</span>
+                <h4 class="font-bold text-slate-900 text-sm">Land & Real Estate</h4>
+                <p class="text-xs text-slate-500 mt-1">Marlas, kanals, acres with dated valuations</p>
+            </div>
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100">
+                <span class="text-2xl block mb-2">💵</span>
+                <h4 class="font-bold text-slate-900 text-sm">Cash & Deposits</h4>
+                <p class="text-xs text-slate-500 mt-1">Bank savings & money market balances</p>
+            </div>
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100">
+                <span class="text-2xl block mb-2">📊</span>
+                <h4 class="font-bold text-slate-900 text-sm">Mutual Funds / ETFs</h4>
+                <p class="text-xs text-slate-500 mt-1">Unit counts & Net Asset Values (NAV)</p>
+            </div>
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100">
+                <span class="text-2xl block mb-2">📜</span>
+                <h4 class="font-bold text-slate-900 text-sm">Bonds & Sukuks</h4>
+                <p class="text-xs text-slate-500 mt-1">Face value, coupon rate & accrued interest</p>
+            </div>
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100">
+                <span class="text-2xl block mb-2">🚗</span>
+                <h4 class="font-bold text-slate-900 text-sm">Vehicles & Physical</h4>
+                <p class="text-xs text-slate-500 mt-1">Depreciation tracking & purchase year</p>
+            </div>
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100">
+                <span class="text-2xl block mb-2">📑</span>
+                <h4 class="font-bold text-slate-900 text-sm">Executive Reports</h4>
+                <p class="text-xs text-slate-500 mt-1">One-click PDF statements and CSV exports</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action Banner -->
+    <div class="bg-indigo-900 text-white rounded-3xl p-8 sm:p-12 text-center space-y-4">
+        <h3 class="text-2xl sm:text-3xl font-extrabold">Ready to evaluate your asset health?</h3>
+        <p class="text-sm text-indigo-200 max-w-xl mx-auto">
+            Create an account in 30 seconds and record your first holding in Pakistani Rupee.
+        </p>
+        <div class="pt-2">
+            <a href="{% url 'signup' %}" class="inline-block bg-white hover:bg-slate-100 text-indigo-900 font-bold px-8 py-3.5 rounded-xl text-sm shadow transition">
+                Create Free Account
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
